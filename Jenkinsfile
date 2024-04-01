@@ -50,7 +50,7 @@ pipeline {
 			steps {
 				script {
 					withCredentials([usernameColonPassword(credentialsId: '5b0c0423-ffea-46a7-955e-1114f1c45500', variable: 'dockerpwd')]) {
-    						sh 'docker login -u dhamatvivek -p ${dockerhunpwd}'
+    						sh 'docker login -u dhamatvivek -p ${dockerhubpwd}'
 						
    					}
 					sh 'docker push dhamatvivek/register-app'
