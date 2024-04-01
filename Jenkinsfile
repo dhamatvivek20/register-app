@@ -38,10 +38,22 @@ pipeline {
 			}
 		}
 
-		stage("Qulity Gate") {
+		stage("Build Docker Image") {
 			steps {
 				script {
-					waitForQualityGate abortPipeline: false, credentialsId: '6e88d42c-041b-47b8-89ee-26c83003cc8a'
+					sh 'docker build -t dhamatvivek/register-app .'
+				}
+			}
+		}
+
+		stage("Push Docker Image") {
+			steps {
+				script {
+					withCredentials([usernameColonPassword(credentialsId: '5b0c0423-ffea-46a7-955e-1114f1c45500', variable: 'dockerpwd')]) {
+    						sh 'docker login -u dhamatvivek -p ${dockerhunpwd}'
+						
+   					}
+					sh 'docker push dhamatvivek/register-app'
 				}
 			}
 		}
