@@ -41,7 +41,7 @@ pipeline {
 		stage("Build Docker Image") {
 			steps {
 				script {
-					sh 'docker build -t dhamatvivek/register-app .'
+					sh 'docker build -t dhamatvivek/register-app:latest .'
 				}
 			}
 		}
@@ -49,11 +49,9 @@ pipeline {
 		stage("Push Docker Image") {
 			steps {
 				script {
-					withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'docker-cred')]) {
-    						sh 'docker login -u dhamatvivek -p ${docker-cred}'
+					withDockerRegistry(credentialsId: '5b0c0423-ffea-46a7-955e-1114f1c45500') {
+						sh 'docker push dhamatvivek/register-app:latest'
 					}
-   					
-					sh 'docker push dhamatvivek/register-app'
 				}
 			}
 		}
