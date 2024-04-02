@@ -49,10 +49,10 @@ pipeline {
 		stage("Push Docker Image") {
 			steps {
 				script {
-					withCredentials([usernameColonPassword(credentialsId: '5b0c0423-ffea-46a7-955e-1114f1c45500', variable: 'dockerpwd')]) {
-    						sh 'docker login -u dhamatvivek -p ${dockerpwd}'
-						
-   					}
+					withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'docker-cred')]) {
+    						sh 'docker login -u dhamatvivek -p ${docker-cred}'
+					}
+   					
 					sh 'docker push dhamatvivek/register-app'
 				}
 			}
