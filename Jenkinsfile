@@ -55,6 +55,14 @@ pipeline {
 				}
 			}
 		}
+
+		stage ('Cleanup Artifacts') {
+           		steps {
+               			script {
+                    			sh "docker rmi dhamatvivek/register-app:latest"
+              			}
+          		}
+       		}
 		
 	}
 }
