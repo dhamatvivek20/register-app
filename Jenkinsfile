@@ -83,6 +83,7 @@ pipeline {
                             sh 'echo $PATH'
                             sh 'kubectl get pods'
                             sh 'kubectl apply -f deployment-service.yaml'
+		            sh 'minikube service register-app-service'
 
                         		}
                     		}
