@@ -64,5 +64,31 @@ pipeline {
           		}
        		}
 		
+		stage('Deploy to Kubernetes') {
+            		steps {
+                    		withCredentials([
+                        		file(credentialsId: 'cacrt', variable: 'CA_CERT_PATH'),
+                        		file(credentialsId: 'clientkey', variable: 'CLIENT_KEY_PATH'),
+                        		file(credentialsId: 'clientcrt', variable: 'CLIENT_CERT_PATH'),
+                        		kubeconfigContent(credentialsId: 'K8cred', variable: 'KUBECONFIG_CONTENT')
+                    ]) {
+                        script {
+                            def kubeconfig = env.KUBECONFIG_CONTENT
+                            kubeconfig = kubeconfig.replaceAll('/home/vivek/.minikube/ca.crt', env.CA_CERT_PATH)
+                            kubeconfig = kubeconfig.replaceAll('/home/vivek/.minikube/profiles/minikube/client.crt', env.CLIENT_CERT_PATH)
+                            kubeconfig = kubeconfig.replaceAll('/home/vivek/.minikube/profiles/minikube/client.key', env.CLIENT_KEY_PATH)
+                            writeFile file: 'kubeconfig', text: kubeconfig
+                            env.KUBECONFIG = 'kubeconfig'
+                            env.PATH = "/usr/local/bin/:" + env.PATH
+                            sh 'echo $PATH'
+                            sh 'kubectl get pods'
+                            sh 'kubectl apply -f deployment-service.yaml'
+
+                        		}
+                    		}
+                
+            		}
+        	}
+		
 	}
 }
