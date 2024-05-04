@@ -28,15 +28,15 @@ pipeline {
 				sh 'mvn test'
 			}
 		}
-		stage("SonarQube Analysis") {
-			steps {
-				script {
-					withSonarQubeEnv(credentialsId: 'sonar') {
-    						sh 'mvn sonar:sonar'
-					}
-				}
-			}
-		}
+		// stage("SonarQube Analysis") {
+		// 	steps {
+		// 		script {
+		// 			withSonarQubeEnv(credentialsId: 'sonar') {
+  //   						sh 'mvn sonar:sonar'
+		// 			}
+		// 		}
+		// 	}
+		// }
 
 		stage("Build Docker Image") {
 			steps {
